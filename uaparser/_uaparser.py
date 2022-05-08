@@ -15,7 +15,7 @@ TABLET = 'tablet'
 SMARTTV = 'smarttv'
 WEARABLE = 'wearable'
 EMBEDDED = 'embedded'
-UA_MAX_LENGTH = 275
+UA_MAX_LENGTH = 255
 
 AMAZON = 'Amazon'
 APPLE = 'Apple'
@@ -250,7 +250,7 @@ REGEXES = {
         r'\b((?:ag[rs][23]?|bah2?|sht?|btv)-a?[lw]\d{2})\b(?!.+d\/s)'
     ], [MODEL, [VENDOR, HUAWEI], [TYPE, TABLET]], [
         r'(?:huawei|honor)([-\w ]+)[;\)]',
-        r'\b(nexus 6p|\w{2,4}e?-[atu]?[ln][\dx][012359c][adn]?)\b(?!.+d\/s)'
+        r'\b(nexus 6p|\w{2,4}-[atu]?[ln][01259x][012359][an]?)\b(?!.+d\/s)'
     ], [MODEL, [VENDOR, HUAWEI], [TYPE, MOBILE]], [
 
         # Xiaomi
@@ -258,7 +258,7 @@ REGEXES = {
         r'\b; (\w+) build\/hm\1',  # Xiaomi Hongmi 'numeric' models
         r'\b(hm[-_ ]?note?[_ ]?(?:\d\w)?) bui',  # Xiaomi Hongmi
         r'\b(redmi[\-_ ]?(?:note|k)?[\w_ ]+)(?: bui|\))',  # Xiaomi Redmi
-        r'\b(mi[-_ ]?(?:a\d|one|one[_ ]plus|note lte|max|cc)?[_ ]?(?:\d?\w?)[_ ]?(?:plus|se|lite)?)(?: bui|\))'  # Xiaomi Mi
+        r'\b(mi[-_ ]?(?:a\d|one|one[_ ]plus|note lte|max)?[_ ]?(?:\d?\w?)[_ ]?(?:plus|se|lite)?)(?: bui|\))'  # Xiaomi Mi
     ], [[MODEL, '_', ' '], [VENDOR, XIAOMI], [TYPE, MOBILE]], [
         r'\b(mi[-_ ]?(?:pad)(?:[\w_ ]+))(?: bui|\))'  # Mi Pad tablets
     ], [[MODEL, '_', ' '], [VENDOR, XIAOMI], [TYPE, TABLET]], [
@@ -310,7 +310,7 @@ REGEXES = {
     ], [MODEL, [VENDOR, GOOGLE], [TYPE, MOBILE]], [
 
         # Sony
-        r'droid.+ (a?\d[0-2]{2}so|[c-g]\d{4}|so[-gl]\w+|xq-a\w[4-7][12])(?= bui|\).+chrome\/(?![1-6]{0,1}\d\.))'
+        r'droid.+ ([c-g]\d{4}|so[-gl]\w+|xq-a\w[4-7][12])(?= bui|\).+chrome\/(?![1-6]{0,1}\d\.))'
     ], [MODEL, [VENDOR, SONY], [TYPE, MOBILE]], [
         r'sony tablet [ps]',
         r'\b(?:sony)?sgp\w+(?: bui|\))'
@@ -349,7 +349,7 @@ REGEXES = {
 
         # ZTE
         r'(zte)[- ]([\w ]+?)(?: bui|\/|\))',
-        r'(alcatel|geeksphone|nexian|panasonic|sony(?!-bra))[-_ ]?([-\w]*)'  # Alcatel/GeeksPhone/Nexian/Panasonic/Sony
+        r'(alcatel|geeksphone|nexian|panasonic|sony)[-_ ]?([-\w]*)'  # Alcatel/GeeksPhone/Nexian/Panasonic/Sony
     ], [VENDOR, [MODEL, '_', ' '], [TYPE, MOBILE]], [
 
         # Acer
@@ -469,8 +469,6 @@ REGEXES = {
     ], [MODEL, [VENDOR, AMAZON], [TYPE, SMARTTV]], [
         r'\(dtv[\);].+(aquos)'  # Sharp
     ], [MODEL, [VENDOR, 'Sharp'], [TYPE, SMARTTV]], [
-        r'(bravia[\w\- ]+) bui'  # Sony
-    ], [MODEL, [VENDOR, SONY], [TYPE, SMARTTV]], [
         r'\b(roku)[\dx]*[\)\/]((?:dvp-)?[\d\.]*)',  # Roku
         r'hbbtv\/\d+\.\d+\.\d+ +\([\w ]*; *(\w[^;]*);([^;]*)'  # HbbTV devices
     ], [[VENDOR, trim], [MODEL, trim], [TYPE, SMARTTV]], [

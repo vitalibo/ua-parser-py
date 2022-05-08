@@ -93,4 +93,4 @@ def test_ua_max_length():
 
     actual = UAParser(ua)
 
-    assert len(actual.ua) == 275
+    assert len(actual.ua) == 255

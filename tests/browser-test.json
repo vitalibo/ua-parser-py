@@ -171,15 +171,6 @@
     }
   },
   {
-    "desc": "Chrome",
-    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4758.102 Safari/537.36",
-    "expect": {
-      "name": "Chrome",
-      "version": "100.0.4758.102",
-      "major": "100"
-    }
-  },
-  {
     "desc": "Chrome Headless",
     "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome Safari/537.36",
     "expect": {
@@ -375,15 +366,6 @@
       "name": "Firefox",
       "version": "15.0a2",
       "major": "15"
-    }
-  },
-  {
-    "desc": "Firefox",
-    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:100.0) Gecko/20100101 Firefox/100.0",
-    "expect": {
-      "name": "Firefox",
-      "version": "100.0",
-      "major": "100"
     }
   },
   {
@@ -1152,15 +1134,6 @@
     }
   },
   {
-    "desc": "Microsoft Edge 100",
-    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.1108.55 Safari/537.36 Edg/100.0.1108.55",
-    "expect": {
-      "name": "Edge",
-      "version": "100.0.1108.55",
-      "major": "100"
-    }
-  },
-  {
     "desc": "Microsoft Edge on iOS",
     "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 EdgiOS/42.1.1.0 Mobile/15F79 Safari/605.1.15",
     "expect": {
@@ -1347,15 +1320,6 @@
       "name": "Electron",
       "version": "4.2.7",
       "major": "4"
-    }
-  },
-  {
-    "desc": "IE11 on Windows 7 (ua length >255)",
-    "ua": "Mozilla/5.0 (Windows NT 6.1; WOW64; APCPMS=^N201205020840572565478A37A6F9C41BD33F_9975^; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E; MARKANYEPS#25118; Zoom 3.6.0; rv:11.0) like Gecko",
-    "expect": {
-      "name": "IE",
-      "version": "11.0",
-      "major": "11"
     }
   }
 ]
