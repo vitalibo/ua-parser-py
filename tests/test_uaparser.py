@@ -1,4 +1,5 @@
 import json
+import os
 
 import pytest
 
@@ -6,7 +7,7 @@ from uaparser import UAParser
 
 
 def params(path):
-    with open(path, 'r') as f:
+    with open(os.path.join(os.path.dirname(__file__), path), 'r', encoding='utf-8') as f:
         for i in json.loads(f.read()):
             yield pytest.param(i['ua'], i['expect'], id=i['desc'])
 

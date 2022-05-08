@@ -68,8 +68,8 @@ def has(str1, str2):
     return False
 
 
-def lowerize(str):
-    return str.lower()
+def lowerize(string):
+    return string.lower()
 
 
 def majorize(version):
@@ -78,20 +78,20 @@ def majorize(version):
     return None
 
 
-def trim(str):
-    return re.sub(r'\s\s*$', EMPTY, re.sub(r'^\s\s*', EMPTY, str))
+def trim(string):
+    return re.sub(r'\s\s*$', EMPTY, re.sub(r'^\s\s*', EMPTY, string))
 
 
-def str_mapper(str, map):
-    for key, value in map.items():
+def str_mapper(string, mapping):
+    for key, value in mapping.items():
         # check if current value is array
-        if isinstance(value, list) and len(value) > 0:
-            for v in value:
-                if has(v, str):
+        if isinstance(value, list):
+            for item in value:
+                if has(item, string):
                     return None if key == UNKNOWN else key
-        elif has(value, str):
+        elif has(value, string):
             return None if key == UNKNOWN else key
-    return str
+    return string
 
 
 REGEXES = {
@@ -659,37 +659,37 @@ class UAParser:
     @property
     def browser(self):
         _browser = {NAME: None, VERSION: None, MAJOR: None}
-        for k, v in rgx_mapper(self._ua, REGEXES['browser']):
-            _browser[k] = v
+        for key, value in rgx_mapper(self._ua, REGEXES['browser']):
+            _browser[key] = value
         _browser[MAJOR] = majorize(_browser[VERSION])
         return _browser
 
     @property
     def cpu(self):
         _cpu = {ARCHITECTURE: None}
-        for k, v in rgx_mapper(self._ua, REGEXES['cpu']):
-            _cpu[k] = v
+        for key, value in rgx_mapper(self._ua, REGEXES['cpu']):
+            _cpu[key] = value
         return _cpu
 
     @property
     def device(self):
         _device = {VENDOR: None, MODEL: None, TYPE: None}
-        for k, v in rgx_mapper(self._ua, REGEXES['device']):
-            _device[k] = v
+        for key, value in rgx_mapper(self._ua, REGEXES['device']):
+            _device[key] = value
         return _device
 
     @property
     def engine(self):
         _engine = {NAME: None, VERSION: None}
-        for k, v in rgx_mapper(self._ua, REGEXES['engine']):
-            _engine[k] = v
+        for key, value in rgx_mapper(self._ua, REGEXES['engine']):
+            _engine[key] = value
         return _engine
 
     @property
     def os(self):
         _os = {NAME: None, VERSION: None}
-        for k, v in rgx_mapper(self._ua, REGEXES['os']):
-            _os[k] = v
+        for key, value in rgx_mapper(self._ua, REGEXES['os']):
+            _os[key] = value
         return _os
 
     @property
