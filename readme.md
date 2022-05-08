@@ -105,12 +105,12 @@ from uaparser import UAParser
 uastring1 = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.2 (KHTML, like Gecko) Ubuntu/11.10 Chromium/15.0.874.106 Chrome/15.0.874.106 Safari/535.2'
 result = UAParser(uastring1)
 
-print(result.browser)  # 'browser': {'name': 'Chromium', 'version': '15.0.874.106', 'major': '15'}
+print(result.browser)  # {'name': 'Chromium', 'version': '15.0.874.106', 'major': '15'}
 print(result.device)  # {'vendor': None, 'model': None, 'type': None}
 print(result.os)  # {'name': 'Ubuntu', 'version': '11.10'}
-print(result.os.version)  # '11.10'
-print(result.engine.name)  # 'WebKit'
-print(result.cpu.architecture)  # 'amd64'
+print(result.os['version'])  # '11.10'
+print(result.engine['name'])  # 'WebKit'
+print(result.cpu['architecture'])  # 'amd64'
 
 uastring2 = 'Mozilla/5.0 (compatible; Konqueror/4.1; OpenBSD) KHTML/4.1.4 (like Gecko)'
 result = UAParser.parse(uastring2)
