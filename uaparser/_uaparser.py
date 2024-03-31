@@ -15,7 +15,7 @@ TABLET = 'tablet'
 SMARTTV = 'smarttv'
 WEARABLE = 'wearable'
 EMBEDDED = 'embedded'
-UA_MAX_LENGTH = 255
+UA_MAX_LENGTH = 500
 
 AMAZON = 'Amazon'
 APPLE = 'Apple'
@@ -32,10 +32,13 @@ MICROSOFT = 'Microsoft'
 MOTOROLA = 'Motorola'
 OPERA = 'Opera'
 SAMSUNG = 'Samsung'
+SHARP = 'Sharp'
 SONY = 'Sony'
 XIAOMI = 'Xiaomi'
 ZEBRA = 'Zebra'
 FACEBOOK = 'Facebook'
+CHROMIUM_OS = 'Chromium OS'
+MAC_OS = 'Mac OS'
 
 OLD_SAFARI_MAP = {
     '1.0': '/8',
@@ -79,7 +82,7 @@ def majorize(version):
 
 
 def trim(string):
-    return re.sub(r'\s\s*$', EMPTY, re.sub(r'^\s\s*', EMPTY, string))
+    return re.sub(r'^\s\s*', EMPTY, string)
 
 
 def str_mapper(string, mapping):
@@ -112,30 +115,34 @@ REGEXES = {
     ], [VERSION, [NAME, OPERA]], [
 
         # Mixed
+        r'\bb[ai]*d(?:uhd|[ub]*[aekoprswx]{5,6})[\/ ]?([\w\.]+)'  # Baidu
+    ], [VERSION, [NAME, 'Baidu']], [
         r'(kindle)\/([\w\.]+)',  # Kindle
         r'(lunascape|maxthon|netfront|jasmine|blazer)[\/ ]?([\w\.]*)',  # Lunascape/Maxthon/Netfront/Jasmine/Blazer
 
         # Trident based
-        r'(avant |iemobile|slim)(?:browser)?[\/ ]?([\w\.]*)',  # Avant/IEMobile/SlimBrowser
-        r'(ba?idubrowser)[\/ ]?([\w\.]+)',  # Baidu Browser
+        r'(avant|iemobile|slim)\s?(?:browser)?[\/ ]?([\w\.]*)',  # Avant/IEMobile/SlimBrowser
         r'(?:ms|\()(ie) ([\w\.]+)',  # Internet Explorer
 
         # Webkit/KHTML based
-        r'(flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser|quark|qupzilla|falkon|rekonq|puffin|brave|whale|qqbrowserlite|qq)\/([-\w\.]+)',  # Rekonq/Puffin/Brave/Whale/QQBrowserLite/QQ, aka ShouQ
+        r'(flock|rockmelt|midori|epiphany|silk|skyfire|bolt|iron|vivaldi|iridium|phantomjs|bowser|quark|qupzilla|falkon|rekonq|puffin|brave|whale(?!.+naver)|qqbrowserlite|qq|duckduckgo)\/([-\w\.]+)',  # Rekonq/Puffin/Brave/Whale/QQBrowserLite/QQ, aka ShouQ
+        r'(heytap|ovi)browser\/([\d\.]+)',  # Heytap/Ovi
         r'(weibo)__([\d\.]+)'  # Weibo
     ], [NAME, VERSION], [
         r'(?:\buc? ?browser|(?:juc.+)ucweb)[\/ ]?([\w\.]+)'  # UCBrowser
     ], [VERSION, [NAME, 'UC' + BROWSER]], [
-        r'\bqbcore\/([\w\.]+)'  # WeChat Desktop for Windows Built-in Browser
-    ], [VERSION, [NAME, 'WeChat(Win) Desktop']], [
+        r'microm.+\bqbcore\/([\w\.]+)',  # WeChat Desktop for Windows Built-in Browser
+        r'\bqbcore\/([\w\.]+).+microm',
         r'micromessenger\/([\w\.]+)'  # WeChat
     ], [VERSION, [NAME, 'WeChat']], [
         r'konqueror\/([\w\.]+)'  # Konqueror
     ], [VERSION, [NAME, 'Konqueror']], [
         r'trident.+rv[: ]([\w\.]{1,9})\b.+like gecko'  # IE11
     ], [VERSION, [NAME, 'IE']], [
-        r'yabrowser\/([\w\.]+)'  # Yandex
+        r'ya(?:search)?browser\/([\w\.]+)'  # Yandex
     ], [VERSION, [NAME, 'Yandex']], [
+        r'slbrowser\/([\w\.]+)'  # Smart Lenovo Browser
+    ], [VERSION, [NAME, 'Smart Lenovo ' + BROWSER]], [
         r'(avast|avg)\/([\w\.]+)'  # Avast/AVG Secure Browser
     ], [[NAME, r'(.+)', '$1 Secure ' + BROWSER], VERSION], [
         r'\bfocus\/([\w\.]+)'  # Firefox Focus
@@ -154,27 +161,39 @@ REGEXES = {
     ], [VERSION, [NAME, FIREFOX]], [
         r'\bqihu|(qi?ho?o?|360)browser'  # 360
     ], [[NAME, '360 ' + BROWSER]], [
-        r'(oculus|samsung|sailfish)browser\/([\w\.]+)'  # Oculus/Samsung/Sailfish Browser
+        r'(oculus|sailfish|huawei|vivo)browser\/([\w\.]+)'  # Oculus/Sailfish/HuaweiBrowser/VivoBrowser
     ], [[NAME, r'(.+)', '$1 ' + BROWSER], VERSION], [
+        r'samsungbrowser\/([\w\.]+)'  # Samsung Internet
+    ], [VERSION, [NAME, SAMSUNG + ' Internet']], [
         r'(comodo_dragon)\/([\w\.]+)'  # Comodo Dragon
     ], [[NAME, r'_', ' '], VERSION], [
+        r'metasr[\/ ]?([\d\.]+)'  # Sogou Explorer
+    ], [VERSION, [NAME, 'Sogou Explorer']], [
+        r'(sogou)mo\w+\/([\d\.]+)'  # Sogou Mobile
+    ], [[NAME, 'Sogou Mobile'], VERSION], [
         r'(electron)\/([\w\.]+) safari',  # Electron-based App
         r'(tesla)(?: qtcarbrowser|\/(20\d\d\.[-\w\.]+))',  # Tesla
-        r'm?(qqbrowser|baiduboxapp|2345Explorer)[\/ ]?([\w\.]+)'  # QQBrowser/Baidu App/2345 Browser
+        r'm?(qqbrowser|2345Explorer)[\/ ]?([\w\.]+)'  # QQBrowser/2345 Browser
     ], [NAME, VERSION], [
-        r'(metasr)[\/ ]?([\w\.]+)',  # SouGouBrowser
-        r'(lbbrowser)'  # LieBao Browser
+        r'(lbbrowser)',  # // LieBao Browser
+        r'\[(linkedin)app\]'  # LinkedIn App for iOS & Android
     ], [NAME], [
 
         # WebView
         r'((?:fban\/fbios|fb_iab\/fb4a)(?!.+fbav)|;fbav\/([\w\.]+);)'  # Facebook App for iOS & Android
     ], [[NAME, FACEBOOK], VERSION], [
+        r'(Klarna)\/([\w\.]+)',  # Klarna Shopping Browser for iOS & Android
+        r'(kakao(?:talk|story))[\/ ]([\w\.]+)',  # Kakao App
+        r'(naver)\(.*?(\d+\.[\w\.]+).*\)',  # Naver InApp
         r'safari (line)\/([\w\.]+)',  # Line App for iOS
         r'\b(line)\/([\w\.]+)\/iab',  # Line App for Android
-        r'(chromium|instagram)[\/ ]([-\w\.]+)'  # Chromium/Instagram
+        r'(alipay)client\/([\w\.]+)',  # Alipay
+        r'(chromium|instagram|snapchat)[\/ ]([-\w\.]+)'  # Chromium/Instagram/Snapchat
     ], [NAME, VERSION], [
         r'\bgsa\/([\w\.]+) .*safari\/'  # Google Search Appliance on iOS
     ], [VERSION, [NAME, 'GSA']], [
+        r'musical_ly(?:.+app_?version\/|_)([\w\.]+)'  # TikTok
+    ], [VERSION, [NAME, 'TikTok']], [
         r'headlesschrome(?:\/([\w\.]+)| )'  # Chrome Headless
     ], [VERSION, [NAME, CHROME + ' Headless']], [
         r' wv\).+(chrome)\/([\w\.]+)'  # Chrome WebView
@@ -183,9 +202,9 @@ REGEXES = {
     ], [VERSION, [NAME, 'Android ' + BROWSER]], [
         r'(chrome|omniweb|arora|[tizenoka]{5} ?browser)\/v?([\w\.]+)'  # Chrome/OmniWeb/Arora/Tizen/Nokia
     ], [NAME, VERSION], [
-        r'version\/([\w\.]+) .*mobile\/\w+ (safari)'  # Mobile Safari
+        r'version\/([\w\.\,]+) .*mobile\/\w+ (safari)'  # Mobile Safari
     ], [VERSION, [NAME, 'Mobile Safari']], [
-        r'version\/([\w\.]+) .*(mobile ?safari|safari)'  # Safari & Safari Mobile
+        r'version\/([\w(\.|\,)]+) .*(mobile ?safari|safari)'  # Safari & Safari Mobile
     ], [VERSION, NAME], [
         r'webkit.+?(mobile ?safari|safari)(\/[\w\.]+)'  # Safari < 3.0
     ], [NAME, [VERSION, str_mapper, OLD_SAFARI_MAP]], [
@@ -206,8 +225,11 @@ REGEXES = {
 
         # Other
         r'(polaris|lynx|dillo|icab|doris|amaya|w3m|netsurf|sleipnir|obigo|mosaic|(?:go|ice|up)[\. ]?browser)[-\/ ]?v?([\w\.]+)',  # Polaris/Lynx/Dillo/iCab/Doris/Amaya/w3m/NetSurf/Sleipnir/Obigo/Mosaic/Go/ICE/UP.Browser
-        r'(links) \(([\w\.]+)'  # Links
-    ], [NAME, VERSION]],
+        r'(links) \(([\w\.]+)',  # Links
+        r'panasonic;(viera)'  # Panasonic Viera
+    ], [NAME, VERSION], [
+        r'(cobalt)\/([\w\.]+)'  # Cobalt
+    ], [NAME, [VERSION, r'master.|lts.', '']]],
 
     'cpu': [[
         r'(?:(amd|x(?:(?:86|64)[-_])?|wow|win)64)[;\)]'  # AMD64 (x64)
@@ -231,35 +253,43 @@ REGEXES = {
 
     'device': [[
         # Samsung
-        r'\b(sch-i[89]0\d|shw-m380s|sm-[pt]\w{2,4}|gt-[pn]\d{2,4}|sgh-t8[56]9|nexus 10)'
+        r'\b(sch-i[89]0\d|shw-m380s|sm-[ptx]\w{2,4}|gt-[pn]\d{2,4}|sgh-t8[56]9|nexus 10)'
     ], [MODEL, [VENDOR, SAMSUNG], [TYPE, TABLET]], [
-        r'\b((?:s[cgp]h|gt|sm)-\w+|galaxy nexus)',
+        r'\b((?:s[cgp]h|gt|sm)-\w+|sc[g-]?[\d]+a?|galaxy nexus)',
         r'samsung[- ]([-\w]+)',
         r'sec-(sgh\w+)'
     ], [MODEL, [VENDOR, SAMSUNG], [TYPE, MOBILE]], [
 
         # Apple
-        r'\((ip(?:hone|od)[\w ]*);'  # iPod/iPhone
+        r'(?:\/|\()(ip(?:hone|od)[\w, ]*)(?:\/|;)'  # iPod/iPhone
     ], [MODEL, [VENDOR, APPLE], [TYPE, MOBILE]], [
         r'\((ipad);[-\w\),; ]+apple',  # iPad
         r'applecoremedia\/[\w\.]+ \((ipad)',
         r'\b(ipad)\d\d?,\d\d?[;\]].+ios'
     ], [MODEL, [VENDOR, APPLE], [TYPE, TABLET]], [
+        r'(macintosh);'
+    ], [MODEL, [VENDOR, APPLE]], [
+
+        # Sharp
+        r'\b(sh-?[altvz]?\d\d[a-ekm]?)'
+    ], [MODEL, [VENDOR, SHARP], [TYPE, MOBILE]], [
 
         # Huawei
         r'\b((?:ag[rs][23]?|bah2?|sht?|btv)-a?[lw]\d{2})\b(?!.+d\/s)'
     ], [MODEL, [VENDOR, HUAWEI], [TYPE, TABLET]], [
         r'(?:huawei|honor)([-\w ]+)[;\)]',
-        r'\b(nexus 6p|\w{2,4}-[atu]?[ln][01259x][012359][an]?)\b(?!.+d\/s)'
+        r'\b(nexus 6p|\w{2,4}e?-[atu]?[ln][\dx][012359c][adn]?)\b(?!.+d\/s)'
     ], [MODEL, [VENDOR, HUAWEI], [TYPE, MOBILE]], [
 
         # Xiaomi
-        r'\b(poco[\w ]+)(?: bui|\))',  # Xiaomi POCO
+        r'\b(poco[\w ]+|m2\d{3}j\d\d[a-z]{2})(?: bui|\))',  # Xiaomi POCO
         r'\b; (\w+) build\/hm\1',  # Xiaomi Hongmi 'numeric' models
         r'\b(hm[-_ ]?note?[_ ]?(?:\d\w)?) bui',  # Xiaomi Hongmi
         r'\b(redmi[\-_ ]?(?:note|k)?[\w_ ]+)(?: bui|\))',  # Xiaomi Redmi
-        r'\b(mi[-_ ]?(?:a\d|one|one[_ ]plus|note lte|max)?[_ ]?(?:\d?\w?)[_ ]?(?:plus|se|lite)?)(?: bui|\))'  # Xiaomi Mi
+        r'oid[^\)]+; (m?[12][0-389][01]\w{3,6}[c-y])( bui|; wv|\))',  # Xiaomi Redmi 'numeric' models
+        r'\b(mi[-_ ]?(?:a\d|one|one[_ ]plus|note lte|max|cc)?[_ ]?(?:\d?\w?)[_ ]?(?:plus|se|lite)?)(?: bui|\))'  # Xiaomi Mi
     ], [[MODEL, '_', ' '], [VENDOR, XIAOMI], [TYPE, MOBILE]], [
+        r'oid[^\)]+; (2\d{4}(283|rpbf)[cgl])( bui|\))',  # Redmi Pad
         r'\b(mi[-_ ]?(?:pad)(?:[\w_ ]+))(?: bui|\))'  # Mi Pad tablets
     ], [[MODEL, '_', ' '], [VENDOR, XIAOMI], [TYPE, TABLET]], [
 
@@ -274,7 +304,7 @@ REGEXES = {
     ], [MODEL, [VENDOR, 'Vivo'], [TYPE, MOBILE]], [
 
         # Realme
-        r'\b(rmx[12]\d{3})(?: bui|;|\))'
+        r'\b(rmx[1-3]\d{3})(?: bui|;|\))'
     ], [MODEL, [VENDOR, 'Realme'], [TYPE, MOBILE]], [
 
         # Motorola
@@ -310,7 +340,7 @@ REGEXES = {
     ], [MODEL, [VENDOR, GOOGLE], [TYPE, MOBILE]], [
 
         # Sony
-        r'droid.+ ([c-g]\d{4}|so[-gl]\w+|xq-a\w[4-7][12])(?= bui|\).+chrome\/(?![1-6]{0,1}\d\.))'
+        r'droid.+ (a?\d[0-2]{2}so|[c-g]\d{4}|so[-gl]\w+|xq-a\w[4-7][12])(?= bui|\).+chrome\/(?![1-6]{0,1}\d\.))'
     ], [MODEL, [VENDOR, SONY], [TYPE, MOBILE]], [
         r'sony tablet [ps]',
         r'\b(?:sony)?sgp\w+(?: bui|\))'
@@ -323,7 +353,7 @@ REGEXES = {
 
         # Amazon
         r'(alexa)webm',
-        r'(kf[a-z]{2}wi)( bui|\))',  # Kindle Fire without Silk
+        r'(kf[a-z]{2}wi|aeo[c-r]{2})( bui|\))',  # Kindle Fire without Silk / Echo Show
         r'(kf[a-z]+)( bui|\)).+silk\/'  # Kindle Fire HD
     ], [MODEL, [VENDOR, AMAZON], [TYPE, TABLET]], [
         r'((?:sd|kf)[0349hijorstuw]+)( bui|\)).+silk\/'  # Fire Phone
@@ -349,7 +379,7 @@ REGEXES = {
 
         # ZTE
         r'(zte)[- ]([\w ]+?)(?: bui|\/|\))',
-        r'(alcatel|geeksphone|nexian|panasonic|sony)[-_ ]?([-\w]*)'  # Alcatel/GeeksPhone/Nexian/Panasonic/Sony
+        r'(alcatel|geeksphone|nexian|panasonic(?!(?:;|\.))|sony(?!-bra))[-_ ]?([-\w]*)'  # Alcatel/GeeksPhone/Nexian/Panasonic/Sony
     ], [VENDOR, [MODEL, '_', ' '], [TYPE, MOBILE]], [
 
         # Acer
@@ -361,12 +391,12 @@ REGEXES = {
         r'\bmz-([-\w]{2,})'
     ], [MODEL, [VENDOR, 'Meizu'], [TYPE, MOBILE]], [
 
-        # Sharp
-        r'\b(sh-?[altvz]?\d\d[a-ekm]?)'
-    ], [MODEL, [VENDOR, 'Sharp'], [TYPE, MOBILE]], [
+        # Ulefone
+        r'; ((?:power )?armor(?:[\w ]{0,8}))(?: bui|\))'
+    ], [MODEL, [VENDOR, 'Ulefone'], [TYPE, MOBILE]], [
 
         # Mixed
-        r'(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron)[-_ ]?([-\w]*)',  # BlackBerry/BenQ/Palm/Sony-Ericsson/Acer/Asus/Dell/Meizu/Motorola/Polytron
+        r'(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron|infinix|tecno)[-_ ]?([-\w]*)',  # BlackBerry/BenQ/Palm/Sony-Ericsson/Acer/Asus/Dell/Meizu/Motorola/Polytron
         r'(hp) ([\w ]+\w)',  # HP iPAQ
         r'(asus)-?(\w+)',  # Asus
         r'(microsoft); (lumia[\w ]+)',  # Microsoft Lumia
@@ -374,6 +404,7 @@ REGEXES = {
         r'(jolla)',  # Jolla
         r'(oppo) ?([\w ]+) bui'  # OPPO
     ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+        r'(kobo)\s(ereader|touch)',  # Kobo
         r'(archos) (gamepad2?)',  # Archos
         r'(hp).+(touchpad(?!.+tablet)|tablet)',  # HP TouchPad
         r'(kindle)\/([\w\.]+)',  # Kindle
@@ -443,17 +474,6 @@ REGEXES = {
         r'droid.+; (ec30|ps20|tc[2-8]\d[kx])\)'
     ], [MODEL, [VENDOR, ZEBRA], [TYPE, MOBILE]], [
 
-        # Consoles
-        r'(ouya)',  # Ouya
-        r'(nintendo) ([wids3utch]+)'  # Nintendo
-    ], [VENDOR, MODEL, [TYPE, CONSOLE]], [
-        r'droid.+; (shield) bui'  # Nvidia
-    ], [MODEL, [VENDOR, 'Nvidia'], [TYPE, CONSOLE]], [
-        r'(playstation [345portablevi]+)'  # Playstation
-    ], [MODEL, [VENDOR, SONY], [TYPE, CONSOLE]], [
-        r'\b(xbox(?: one)?(?!; xbox))[\); ]'  # Microsoft Xbox
-    ], [MODEL, [VENDOR, MICROSOFT], [TYPE, CONSOLE]], [
-
         # SmartTVs
         r'smart-tv.+(samsung)'  # Samsung
     ], [VENDOR, [TYPE, SMARTTV]], [
@@ -465,38 +485,60 @@ REGEXES = {
     ], [VENDOR, [MODEL, APPLE + ' TV'], [TYPE, SMARTTV]], [
         r'crkey'  # Google Chromecast
     ], [[MODEL, CHROME + 'cast'], [VENDOR, GOOGLE], [TYPE, SMARTTV]], [
-        r'droid.+aft(\w)( bui|\))'  # Fire TV
+        r'droid.+aft(\w+)( bui|\))'  # Fire TV
     ], [MODEL, [VENDOR, AMAZON], [TYPE, SMARTTV]], [
-        r'\(dtv[\);].+(aquos)'  # Sharp
-    ], [MODEL, [VENDOR, 'Sharp'], [TYPE, SMARTTV]], [
+        r'\(dtv[\);].+(aquos)',  # Sharp
+        r'(aquos-tv[\w ]+)\)'
+    ], [MODEL, [VENDOR, SHARP], [TYPE, SMARTTV]],[
+        r'(bravia[\w ]+)( bui|\))'  # Sony
+    ], [MODEL, [VENDOR, SONY], [TYPE, SMARTTV]], [
+        r'(mitv-\w{5}) bui'  # Xiaomi
+    ], [MODEL, [VENDOR, XIAOMI], [TYPE, SMARTTV]], [
+        r'Hbbtv.*(technisat) (.*);'  # TechniSAT
+    ], [VENDOR, MODEL, [TYPE, SMARTTV]], [
         r'\b(roku)[\dx]*[\)\/]((?:dvp-)?[\d\.]*)',  # Roku
-        r'hbbtv\/\d+\.\d+\.\d+ +\([\w ]*; *(\w[^;]*);([^;]*)'  # HbbTV devices
+        r'hbbtv\/\d+\.\d+\.\d+ +\([\w\+ ]*; *([\w\d][^;]*);([^;]*)'  # HbbTV devices
     ], [[VENDOR, trim], [MODEL, trim], [TYPE, SMARTTV]], [
         r'\b(android tv|smart[- ]?tv|opera tv|tv; rv:)\b'  # SmartTV from Unidentified Vendors
     ], [[TYPE, SMARTTV]], [
 
+        # Consoles
+        r'(ouya)',  # Ouya
+        r'(nintendo) ([wids3utch]+)'  # Nintendo
+    ], [VENDOR, MODEL, [TYPE, CONSOLE]], [
+        r'droid.+; (shield) bui'  # Nvidia
+    ], [MODEL, [VENDOR, 'Nvidia'], [TYPE, CONSOLE]], [
+        r'(playstation [345portablevi]+)'  # Playstation
+    ], [MODEL, [VENDOR, SONY], [TYPE, CONSOLE]], [
+        r'\b(xbox(?: one)?(?!; xbox))[\); ]'  # Microsoft Xbox
+    ], [MODEL, [VENDOR, MICROSOFT], [TYPE, CONSOLE]], [
+
         # Wearables
         r'((pebble))app'  # Pebble
     ], [VENDOR, MODEL, [TYPE, WEARABLE]], [
+        r'(watch)(?: ?os[,\/]|\d,\d\/)[\d\.]+'  # Apple Watch
+    ], [MODEL, [VENDOR, APPLE], [TYPE, WEARABLE]], [
         r'droid.+; (glass) \d'  # Google Glass
     ], [MODEL, [VENDOR, GOOGLE], [TYPE, WEARABLE]], [
         r'droid.+; (wt63?0{2,3})\)'
     ], [MODEL, [VENDOR, ZEBRA], [TYPE, WEARABLE]], [
-        r'(quest( 2)?)'  # Oculus Quest
+        r'(quest( 2| pro)?)'  # Oculus Quest
     ], [MODEL, [VENDOR, FACEBOOK], [TYPE, WEARABLE]], [
 
         # Embedded
         r'(tesla)(?: qtcarbrowser|\/[-\w\.]+)'  # Tesla
     ], [VENDOR, [TYPE, EMBEDDED]], [
+        r'(aeobc)\b'  # Echo Dot
+    ], [MODEL, [VENDOR, AMAZON], [TYPE, EMBEDDED]], [
 
         # Mixed (Generic)
-        r'droid .+?; ([^;]+?)(?: bui|\) applew).+? mobile safari'  # Android Phones from Unidentified Vendors
+        r'droid .+?; ([^;]+?)(?: bui|; wv\)|\) applew).+? mobile safari'  # Android Phones from Unidentified Vendors
     ], [MODEL, [TYPE, MOBILE]], [
         r'droid .+?; ([^;]+?)(?: bui|\) applew).+?(?! mobile) safari'  # Android Tablets from Unidentified Vendors
     ], [MODEL, [TYPE, TABLET]], [
         r'\b((tablet|tab)[;\/]|focus\/\d(?!.+mobile))'  # Unidentifiable Tablet
     ], [[TYPE, TABLET]], [
-        r'(phone|mobile(?:[;\/]| safari)|pda(?=.+windows ce))'  # Unidentifiable Mobile
+        r'(phone|mobile(?:[;\/]| [ \w\/\.]*safari)|pda(?=.+windows ce))'  # Unidentifiable Mobile
     ], [[TYPE, MOBILE]], [
         r'(android[-\w\. ]{0,9});.+buil'  # Generic Android Device
     ], [MODEL, [VENDOR, 'Generic']]],
@@ -510,7 +552,8 @@ REGEXES = {
         r'(webkit|trident|netfront|netsurf|amaya|lynx|w3m|goanna)\/([\w\.]+)',  # WebKit/Trident/NetFront/NetSurf/Amaya/Lynx/w3m/Goanna
         r'ekioh(flow)\/([\w\.]+)',  # Flow
         r'(khtml|tasman|links)[\/ ]\(?([\w\.]+)',  # KHTML/Tasman/Links
-        r'(icab)[\/ ]([23]\.[\d\.]+)'  # iCab
+        r'(icab)[\/ ]([23]\.[\d\.]+)',  # iCab
+        r'\b(libweb)'
     ], [NAME, VERSION], [
         r'rv\:([\w\.]{1,9})\b.+(gecko)'  # Gecko
     ], [VERSION, NAME]],
@@ -519,23 +562,24 @@ REGEXES = {
         # Windows
         r'microsoft (windows) (vista|xp)'  # Windows (iTunes)
     ], [NAME, VERSION], [
-        r'(windows) nt 6\.2; (arm)',  # Windows RT
         r'(windows (?:phone(?: os)?|mobile))[\/ ]?([\d\.\w ]*)',  # Windows Phone
-        r'(windows)[\/ ]?([ntce\d\. ]+\w)(?!.+xbox)'
     ], [NAME, [VERSION, str_mapper, WINDOWS_VERSION_MAP]], [
-        r'(win(?=3|9|n)|win 9x )([nt\d\.]+)'
-    ], [[NAME, 'Windows'], [VERSION, str_mapper, WINDOWS_VERSION_MAP]], [
+        r'windows nt 6\.2; (arm)',  # Windows RT
+        r'windows[\/ ]?([ntce\d\. ]+\w)(?!.+xbox)',
+        r'(?:win(?=3|9|n)|win 9x )([nt\d\.]+)'
+    ], [[VERSION, str_mapper, WINDOWS_VERSION_MAP], [NAME, 'Windows']], [
 
         # iOS/macOS
         r'ip[honead]{2,4}\b(?:.*os ([\w]+) like mac|; opera)',  # iOS
+        r'(?:ios;fbsv\/|iphone.+ios[\/ ])([\d\.]+)',
         r'cfnetwork\/.+darwin'
     ], [[VERSION, '_', '.'], [NAME, 'iOS']], [
         r'(mac os x) ?([\w\. ]*)',
         r'(macintosh|mac_powerpc\b)(?!.+haiku)'  # Mac OS
-    ], [[NAME, 'Mac OS'], [VERSION, '_', '.']], [
+    ], [[NAME, MAC_OS], [VERSION, '_', '.']], [
 
         # Mobile OSes
-        r'droid ([\w\.]+)\b.+(android[- ]x86)'  # Android-x86
+        r'droid ([\w\.]+)\b.+(android[- ]x86|harmonyos)'  # Android-x86/HarmonyOS
     ], [VERSION, NAME], [
         r'(android|webos|qnx|bada|rim tablet os|maemo|meego|sailfish)[-\/ ]?([\w\.]*)',  # Android/WebOS/QNX/Bada/RIM/Maemo/MeeGo/Sailfish OS
         r'(blackberry)\w*\/([\w\.]*)',  # Blackberry
@@ -551,12 +595,19 @@ REGEXES = {
         r'web0s;.+rt(tv)',
         r'\b(?:hp)?wos(?:browser)?\/([\w\.]+)'  # WebOS
     ], [VERSION, [NAME, 'webOS']], [
+        r'watch(?: ?os[,\/]|\d,\d\/)([\d\.]+)'  # watchOS
+    ], [VERSION, [NAME, 'watchOS']], [
 
         # Google Chromecast
         r'crkey\/([\d\.]+)'  # Google Chromecast
     ], [VERSION, [NAME, CHROME + 'cast']], [
-        r'(cros) [\w]+ ([\w\.]+\w)'  # Chromium OS
-    ], [[NAME, 'Chromium OS'], VERSION], [
+        r'(cros) [\w]+(?:\)| ([\w\.]+)\b)'  # Chromium OS
+    ], [[NAME, CHROMIUM_OS], VERSION],[
+
+        # Smart TVs
+        r'panasonic;(viera)',  # Panasonic Viera
+        r'(netrange)mmh',  # Netrange
+        r'(nettv)\/(\d+\.[\w\.]+)',  # NetTV
 
         # Console
         r'(nintendo|playstation) ([wids345portablevuch]+)',  # Nintendo/Playstation
@@ -576,7 +627,7 @@ REGEXES = {
     ], [[NAME, 'Solaris'], VERSION], [
         r'((?:open)?solaris)[-\/ ]?([\w\.]*)',  # Solaris
         r'(aix) ((\d)(?=\.|\)| )[\w\.])*',  # AIX
-        r'\b(beos|os\/2|amigaos|morphos|openvms|fuchsia|hp-ux)',  # BeOS/OS2/AmigaOS/MorphOS/OpenVMS/Fuchsia/HP-UX
+        r'\b(beos|os\/2|amigaos|morphos|openvms|fuchsia|hp-ux|serenityos)',  # BeOS/OS2/AmigaOS/MorphOS/OpenVMS/Fuchsia/HP-UX/SerenityOS
         r'(unix) ?([\w\.]*)'  # UNIX
     ], [NAME, VERSION]]
 }
@@ -601,6 +652,8 @@ def rgx_mapper(ua, arrays):
 
         # try matching uastring with regexes
         while j < len(regex) and not matches:
+            if not regex[j]:
+                break
             matches = regex[j].search(ua)
             j += 1
             if matches:

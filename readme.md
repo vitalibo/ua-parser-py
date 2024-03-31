@@ -1,12 +1,18 @@
 # UAParser.py
 
-#### fork of [UAParser.js](https://github.com/faisalman/ua-parser-js)
+fork of [UAParser.js](https://github.com/faisalman/ua-parser-js)
 
 ![status](https://github.com/vitalibo/ua-parser-py/actions/workflows/ci.yaml/badge.svg)
 
 Python library to detect Browser, Engine, OS, CPU, and Device type/model from User-Agent data.
 
 # Documentation
+
+## Installation
+
+```sh
+pip install ua-parser-py
+```
 
 ## Constructor
 
@@ -23,20 +29,23 @@ Python library to detect Browser, Engine, OS, CPU, and Device type/model from Us
 
 ```sh
 # Possible 'browser.name':
-2345Explorer, 360 Browser, Amaya, Android Browser, Arora, Avant, Avast, AVG,
-BIDUBrowser, Baidu, Basilisk, Blazer, Bolt, Brave, Bowser, Camino, Chimera,
-Chrome Headless, Chrome WebView, Chrome, Chromium, Comodo Dragon, Dillo,
-Dolphin, Doris, Edge, Electron, Epiphany, Facebook, Falkon, Fennec, Firebird,
-Firefox [Reality], Flock, Flow, GSA, GoBrowser, ICE Browser, IE, IEMobile, IceApe, 
-IceCat, IceDragon, Iceweasel, Instagram, Iridium, Iron, Jasmine, K-Meleon,
-Kindle, Klar, Konqueror, LBBROWSER, Line, Links, Lunascape, Lynx, MIUI Browser,
-Maemo Browser, Maemo, Maxthon, MetaSr Midori, Minimo, Mobile Safari, Mosaic,
-Mozilla, NetFront, NetSurf, Netfront, Netscape, NokiaBrowser, Obigo, Oculus Browser,
-OmniWeb, Opera Coast, Opera [Mini/Mobi/Tablet], PaleMoon, PhantomJS, Phoenix, 
-Polaris, Puffin, QQ, QQBrowser, QQBrowserLite, Quark, QupZilla, RockMelt, Safari, 
-Sailfish Browser, Samsung Browser, SeaMonkey, Silk, Skyfire, Sleipnir, Slim, 
-SlimBrowser, Swiftfox, Tesla, Tizen Browser, UCBrowser, UP.Browser, Vivaldi, 
-Waterfox, WeChat, Weibo, Yandex, baidu, iCab, w3m, Whale Browser...
+2345Explorer, 360 Browser, Alipay, Amaya, Android Browser, Arora, Avant, Avast, 
+AVG, Baidu, Basilisk, Blazer, Bolt, Brave, Bowser, Camino, Chimera,
+Chrome Headless, Chrome WebView, Chrome, Chromium, Cobalt, Comodo Dragon, Dillo,
+Dolphin, Doris, DuckDuckGo, Edge, Electron, Epiphany, Facebook, Falkon, Fennec, 
+Firebird, Firefox [Focus/Reality], Flock, Flow, GSA, GoBrowser, Heytap, 
+Huawei Browser, iCab, ICE Browser, IE, IEMobile, IceApe, IceCat, IceDragon, 
+Iceweasel, Instagram, Iridium, Iron, Jasmine, Kakao[Story/Talk], K-Meleon, 
+Kindle, Klar, Klarna, Konqueror, LBBROWSER, Line, LinkedIn, Links, Lunascape, 
+Lynx, MIUI Browser, Maemo, Maxthon, Midori, Minimo, Mobile Safari, Mosaic, 
+Mozilla, NetFront, NetSurf, Netfront, Netscape, NokiaBrowser, Obigo, 
+Oculus Browser, OmniWeb, Opera Coast, Opera [Mini/Mobi/Tablet], PaleMoon, 
+PhantomJS, Phoenix, Polaris, Puffin, QQ, QQBrowser, QQBrowserLite, Quark, 
+QupZilla, RockMelt, Safari, Sailfish Browser, Samsung Internet, SeaMonkey, Silk, 
+Skyfire, Sleipnir, Slim, SlimBrowser, Smart Lenovo Browser, Snapchat, 
+Sogou [Explorer/Mobile], Swiftfox, Tesla, TikTok, Tizen Browser, UCBrowser, 
+UP.Browser, Viera, Vivaldi, Vivo Browser, Waterfox, WeChat, Weibo, Yandex, w3m, 
+Whale Browser, ...
 
 # 'browser.version' determined dynamically
 ```
@@ -48,12 +57,20 @@ Waterfox, WeChat, Weibo, Yandex, baidu, iCab, w3m, Whale Browser...
 # Possible 'device.type':
 console, mobile, tablet, smarttv, wearable, embedded
 
+##########
+# NOTE: 'desktop' is not a possible device type. 
+# UAParser only reports info directly available from the UA string, which is not the case for 'desktop' device type.
+# If you wish to detect desktop devices, you must handle the needed logic yourself.
+# You can read more about it in this issue: https://github.com/faisalman/ua-parser-js/issues/182
+##########
+
 # Possible 'device.vendor':
 Acer, Alcatel, Amazon, Apple, Archos, ASUS, AT&T, BenQ, BlackBerry, Dell,
-Essential, Fairphone, GeeksPhone, Google, HP, HTC, Huawei, Jolla, Lenovo, LG, 
-Meizu, Microsoft, Motorola, Nexian, Nintendo, Nokia, Nvidia, OnePlus, OPPO, Ouya,
-Palm, Panasonic, Pebble, Polytron, Realme, RIM, Roku, Samsung, Sharp, Siemens,
-Sony[Ericsson], Sprint, Tesla, Vivo, Vodafone, Xbox, Xiaomi, Zebra, ZTE, ...
+Essential, Facebook, Fairphone, GeeksPhone, Google, HP, HTC, Huawei, Infinix, 
+Jolla, Kobo, Lenovo, LG, Meizu, Microsoft, Motorola, Nexian, Nintendo, Nokia, 
+Nvidia, OnePlus, OPPO, Ouya, Palm, Panasonic, Pebble, Polytron, Realme, RIM, 
+Roku, Samsung, Sharp, Siemens, Sony[Ericsson], Sprint, Tecno, Tesla, Ulefone, 
+Vivo, Vodafone, Xbox, Xiaomi, Zebra, ZTE, ...
 
 # 'device.model' determined dynamically
 ```
@@ -63,8 +80,8 @@ Sony[Ericsson], Sprint, Tesla, Vivo, Vodafone, Xbox, Xiaomi, Zebra, ZTE, ...
 
 ```sh
 # Possible 'engine.name'
-Amaya, Blink, EdgeHTML, Flow, Gecko, Goanna, iCab, KHTML, Links, Lynx, NetFront,
-NetSurf, Presto, Tasman, Trident, w3m, WebKit
+Amaya, Blink, EdgeHTML, Flow, Gecko, Goanna, iCab, KHTML, LibWeb, Links, Lynx, 
+NetFront, NetSurf, Presto, Tasman, Trident, w3m, WebKit
 
 # 'engine.version' determined dynamically
 ```
@@ -76,11 +93,13 @@ NetSurf, Presto, Tasman, Trident, w3m, WebKit
 # Possible 'os.name'
 AIX, Amiga OS, Android[-x86], Arch, Bada, BeOS, BlackBerry, CentOS, Chromium OS,
 Contiki, Fedora, Firefox OS, FreeBSD, Debian, Deepin, DragonFly, elementary OS, 
-Fuchsia, Gentoo, GhostBSD, GNU, Haiku, HP-UX, Hurd, iOS, Joli, KaiOS, Linpus, Linspire,
-Linux, Mac OS, Maemo, Mageia, Mandriva, Manjaro, MeeGo, Minix, Mint, Morph OS, NetBSD,
-Nintendo, OpenBSD, OpenVMS, OS/2, Palm, PC-BSD, PCLinuxOS, Plan9, PlayStation, QNX, 
-Raspbian, RedHat, RIM Tablet OS, RISC OS, Sabayon, Sailfish, Series40, Slackware, Solaris, 
-SUSE, Symbian, Tizen, Ubuntu, Unix, VectorLinux, WebOS, Windows [Phone/Mobile], Zenwalk, ...
+Fuchsia, Gentoo, GhostBSD, GNU, Haiku, HarmonyOS, HP-UX, Hurd, iOS, Joli, KaiOS, 
+Linpus, Linspire,Linux, Mac OS, Maemo, Mageia, Mandriva, Manjaro, MeeGo, Minix, 
+Mint, Morph OS, NetBSD, NetRange, NetTV, Nintendo, OpenBSD, OpenVMS, OS/2, Palm, 
+PC-BSD, PCLinuxOS, Plan9, PlayStation, QNX, Raspbian, RedHat, RIM Tablet OS, 
+RISC OS, Sabayon, Sailfish, SerenityOS, Series40, Slackware, Solaris, SUSE, 
+Symbian, Tizen, Ubuntu, Unix, VectorLinux, Viera, watchOS, WebOS, 
+Windows [Phone/Mobile], Zenwalk, ...
 
 # 'os.version' determined dynamically
 ```
@@ -90,7 +109,8 @@ SUSE, Symbian, Tizen, Ubuntu, Unix, VectorLinux, WebOS, Windows [Phone/Mobile], 
 
 ```sh
 # Possible 'cpu.architecture'
-68k, amd64, arm[64/hf], avr, ia[32/64], irix[64], mips[64], pa-risc, ppc, sparc[64]
+68k, amd64, arm[64/hf], avr, ia[32/64], irix[64], mips[64], pa-risc, ppc, 
+sparc[64]
 ```
 
 * `ua`
