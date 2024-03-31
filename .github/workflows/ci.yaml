@@ -2,12 +2,12 @@ name: Continuous Integration
 on: [ push ]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5
         with:
           python-version: '3.6'
       - name: Install dependencies
@@ -16,4 +16,4 @@ jobs:
           pip install -r requirements.txt
       - name: Run unit tests
         run: |
-          PYTHONPATH='.' python -m pytest tests/ -p no:cacheprovider
+          PYTHONPATH='.' python -m pytest tests/ -p no:cacheprovider -v
